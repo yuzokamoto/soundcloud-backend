@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
+
 import { UserBusiness } from "../business/UserBusiness";
 import { UserDatabase } from "../database/UserDatabase";
-import { Utils } from "../utils/Utils";
 import { BaseDatabase } from "../database/BaseDatabase";
+import { Utils } from "../utils/Utils";
 
 export class UserController {
   private static userBusiness = new UserBusiness( // prettier-ignore
@@ -15,7 +16,9 @@ export class UserController {
       const token = await UserController.userBusiness.login(loginInput);
       res.status(200).send({ message: "Logged in successfully", token });
     } catch (error) {
-      res.status(error.code || 400).send({ message: error.message });
+      res
+        .status(error.errorCode || 400)
+        .send({ message: error.sqlMessage || error.message });
     } finally {
       BaseDatabase.destroyConnection();
     }
@@ -27,7 +30,9 @@ export class UserController {
       const token = await UserController.userBusiness.signup(signupInput);
       res.status(200).send({ message: "Signup sucessfully", token });
     } catch (error) {
-      res.status(error.code || 400).send({ message: error.message });
+      res
+        .status(error.errorCode || 400)
+        .send({ message: error.sqlMessage || error.message });
     } finally {
       BaseDatabase.destroyConnection();
     }

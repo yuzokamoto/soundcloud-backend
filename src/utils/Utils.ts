@@ -1,7 +1,10 @@
 import bcrypt from "bcryptjs";
 import { v4 } from "uuid";
 import jwt from "jsonwebtoken";
+
 import { tokenDTO } from "../model/tokenDTO";
+import { validateEmptyPropertiesOutput } from "../model/validateEmptyPropertiesOutput";
+import { validateEmptyPropertiesError } from "../model/validateEmptyPropertiesError";
 
 export class Utils {
   public async hashPassword(password: string): Promise<string> {
@@ -31,5 +34,13 @@ export class Utils {
     return tokenData;
   }
 
-  public validateParams() {}
+  public validateEmptyProperties(input: any): validateEmptyPropertiesOutput {
+    let errors: validateEmptyPropertiesError[] = [];
+    for (const key in input) {
+      if (input[key] !== false && !input[key]) {
+        errors.push({ key, value: input[key] });
+      }
+    }
+    return { isValid: errors.length === 0, errors };
+  }
 }
