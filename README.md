@@ -1,3 +1,3 @@
 # soundcloud-backend
 
-[Documentation](http://aware-table.surge.sh/)
+[Documentation](http://unsuitable-hall.surge.sh/)
