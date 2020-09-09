@@ -3,12 +3,9 @@ import { Request, Response } from "express";
 import { UserBusiness } from "../business/UserBusiness";
 import { UserDatabase } from "../database/UserDatabase";
 import { BaseDatabase } from "../database/BaseDatabase";
-import { Utils } from "../utils/Utils";
 
 export class UserController {
-  private static userBusiness = new UserBusiness( // prettier-ignore
-    new UserDatabase(), new Utils() // prettier-ignore
-    ); // prettier-ignore
+  private static userBusiness = new UserBusiness(new UserDatabase());
 
   public async login(req: Request, res: Response) {
     try {
