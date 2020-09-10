@@ -3,10 +3,29 @@ import { Utils } from "../utils/Utils";
 import { signupInputDTO } from "../model/signupInputDTO";
 import { BaseBusiness } from "./BaseBusiness";
 import { UnauthorizedError } from "../error/UnauthorizedError";
+import { User } from "../model/User";
 
 export class UserBusiness extends BaseBusiness {
   constructor(private userDatabase: UserDatabase) {
     super(new Utils());
+  }
+
+  public async getUserFromToken(token: any): Promise<User> {
+    if (!token) {
+      throw new UnauthorizedError(`User is not logged in`);
+    }
+
+    const { id, role }: any = this.utils.verifyToken(token);
+    if (!id || !role) {
+      throw new UnauthorizedError(`Invalid access token`);
+    }
+
+    const user = this.userDatabase.getUserById(id);
+    if (!user) {
+      throw new UnauthorizedError(`Invalid access token`);
+    }
+
+    return user as any;
   }
 
   public async login(input: any): Promise<string> {

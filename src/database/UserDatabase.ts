@@ -17,6 +17,18 @@ export class UserDatabase extends BaseDatabase {
     return new User(id, name, nickname, email, password, role);
   }
 
+  public async getUserById(id: string): Promise<User | null> {
+    const result = await this.getConnection()
+      .from(UserDatabase.TABLE_NAME)
+      .where({ id })
+      .first();
+    if (!result) {
+      return null;
+    }
+    const { name, nickname, email, password, role } = result;
+    return new User(id, name, nickname, email, password, role);
+  }
+
   public async createUser(input: signupInputDTO) {
     await this.getConnection().insert(input).into(UserDatabase.TABLE_NAME);
   }
