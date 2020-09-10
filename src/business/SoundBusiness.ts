@@ -33,7 +33,7 @@ export class SoundBusiness extends BaseBusiness {
     }
 
     const id = this.utils.generateId();
-    const author = user.getNickname();
+    const author = user.getId();
     const date = new Date();
 
     const createSoundInput = {
